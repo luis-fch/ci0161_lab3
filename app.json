@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "lab3",
-    "slug": "lab3",
+    "name": "ci0161_lab3",
+    "slug": "ci0161_lab3",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "lab3",
+    "scheme": "ci0161lab3",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
