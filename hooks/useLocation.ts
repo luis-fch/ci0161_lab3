@@ -42,7 +42,7 @@ export function useLocation(): UseLocationResult {
         setPermissionGranted(true);
 
         const initial = await ExpoLocation.getCurrentPositionAsync({
-          accuracy: ExpoLocation.Accuracy.High,
+          accuracy: ExpoLocation.Accuracy.Highest,
         });
         if (!mounted) return;
 
@@ -56,7 +56,7 @@ export function useLocation(): UseLocationResult {
 
         watchRef.current = await ExpoLocation.watchPositionAsync(
           {
-            accuracy: ExpoLocation.Accuracy.High,
+            accuracy: ExpoLocation.Accuracy.Highest,
             timeInterval: 2000,
             distanceInterval: 1,
           },
