@@ -1,11 +1,8 @@
-
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
-
-import { Colors, Radii, Spacing, Typography } from "../../constants/theme";
-
-import { SavedLocation } from "./MapContainer";
-
+import { Radii, Spacing, Typography } from "../../constants/theme";
+import { useAppTheme } from "../../context/ThemeContext";
 import { PanelHandle } from "../atoms/PanelHandle";
+import { SavedLocation } from "./MapContainer";
 
 interface Props {
   orientation: "portrait" | "landscape";
@@ -20,12 +17,17 @@ export function LocationPanel({
   onSelectLocation,
   locations,
 }: Props) {
+  const { theme } = useAppTheme();
   const isPortrait = orientation === "portrait";
 
   return (
     <View
       style={[
         styles.container,
+        {
+          backgroundColor: theme.surface,
+          borderColor: theme.border,
+        },
         isPortrait ? styles.containerPortrait : styles.containerLandscape,
       ]}
     >
@@ -38,10 +40,12 @@ export function LocationPanel({
         accessibilityRole="button"
         accessibilityLabel="Close locations panel"
       >
-        <PanelHandle orientation={isPortrait ? "horizontal" : "vertical"} />
+        <PanelHandle orientation="horizontal" />
 
         <View style={styles.headerContent}>
-          <Text style={styles.title}>Saved</Text>
+          <Text style={[styles.title, { color: theme.textPrimary }]}>
+            Saved
+          </Text>
         </View>
       </Pressable>
 
@@ -53,12 +57,21 @@ export function LocationPanel({
         {locations.map((location) => (
           <Pressable
             key={location.id}
-            style={styles.locationCard}
+            style={[
+              styles.locationCard,
+              {
+                backgroundColor: theme.background,
+                borderColor: theme.border,
+              },
+            ]}
             onPress={() => onSelectLocation(location)}
           >
-            <Text style={styles.locationName}>{location.name}</Text>
-
-            <Text style={styles.locationCoords}>
+            <Text style={[styles.locationName, { color: theme.textPrimary }]}>
+              {location.name}
+            </Text>
+            <Text
+              style={[styles.locationCoords, { color: theme.textSecondary }]}
+            >
               {location.latitude.toFixed(4)}, {location.longitude.toFixed(4)}
             </Text>
           </Pressable>
@@ -70,42 +83,35 @@ export function LocationPanel({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Colors.surface,
-    borderColor: Colors.border,
+    borderColor: "transparent",
   },
-
   containerPortrait: {
     height: 260,
     borderTopWidth: 1,
     borderTopLeftRadius: Radii.xl,
     borderTopRightRadius: Radii.xl,
   },
-
   containerLandscape: {
     width: 320,
     borderLeftWidth: 1,
     borderTopLeftRadius: Radii.xl,
     borderBottomLeftRadius: Radii.xl,
   },
-
   header: {
     alignItems: "center",
   },
-
   headerPortrait: {
     flexDirection: "column",
     paddingHorizontal: Spacing.lg,
     paddingBottom: Spacing.sm,
     paddingTop: Spacing.md,
   },
-
   headerLandscape: {
     flexDirection: "column",
     paddingHorizontal: Spacing.md,
     paddingBottom: Spacing.sm,
     paddingTop: Spacing.md,
   },
-
   headerContent: {
     flexDirection: "row",
     alignItems: "center",
@@ -113,42 +119,31 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingHorizontal: Spacing.xs,
   },
-
   title: {
     fontSize: Typography.sizes.md,
     fontWeight: Typography.weights.semibold,
-    color: Colors.textPrimary,
     letterSpacing: 0.3,
   },
-
   body: {
     flex: 1,
   },
-
   bodyContent: {
     paddingTop: Spacing.sm,
     paddingBottom: Spacing.md,
   },
-
   locationCard: {
-    backgroundColor: Colors.background,
     marginHorizontal: Spacing.md,
     marginBottom: Spacing.sm,
     padding: Spacing.md,
     borderRadius: Radii.md,
     borderWidth: 1,
-    borderColor: Colors.border,
   },
-
   locationName: {
-    color: Colors.textPrimary,
     fontSize: Typography.sizes.md,
     fontWeight: Typography.weights.semibold,
     marginBottom: 4,
   },
-
   locationCoords: {
-    color: Colors.textSecondary,
     fontSize: Typography.sizes.sm,
   },
 });

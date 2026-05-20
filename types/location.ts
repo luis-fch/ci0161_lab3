@@ -1,1 +1,7 @@
-// No actual idea what I thought this file would be, but it ended up being empty. I guess it's just a placeholder for now? Maybe I'll add some types related to location in the future, but for now, it's just an empty file.
+export interface SavedLocation {
+  id: string;
+  latitude: number;
+  longitude: number;
+  timestamp: number;
+  label?: string;
+}

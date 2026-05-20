@@ -1,13 +1,16 @@
 import React, { useEffect, useRef } from "react";
 import { Animated, Easing, StyleSheet } from "react-native";
-import { Colors } from "../../constants/theme";
+import { useAppTheme } from "../../context/ThemeContext";
 
 interface Props {
   size?: number;
   color?: string;
 }
 
-export function LoadingSpinner({ size = 24, color = Colors.primary }: Props) {
+export function LoadingSpinner({ size = 24, color }: Props) {
+  const { theme } = useAppTheme();
+  const resolvedColor = color ?? theme.primary;
+
   const spin = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -34,7 +37,7 @@ export function LoadingSpinner({ size = 24, color = Colors.primary }: Props) {
           width: size,
           height: size,
           borderRadius: size / 2,
-          borderColor: color,
+          borderColor: resolvedColor,
           transform: [{ rotate }],
         },
       ]}

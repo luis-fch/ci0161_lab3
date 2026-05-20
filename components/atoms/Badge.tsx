@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
-import { Colors, Radii, Spacing, Typography } from "../../constants/theme";
+import { Radii, Spacing, Typography } from "../../constants/theme";
+import { useAppTheme } from "../../context/ThemeContext";
 
 interface Props {
   label: string;
@@ -7,14 +8,14 @@ interface Props {
   textColor?: string;
 }
 
-export function Badge({
-  label,
-  color = Colors.primary,
-  textColor = Colors.background,
-}: Props) {
+export function Badge({ label, color, textColor }: Props) {
+  const { theme } = useAppTheme();
+  const resolvedColor = color ?? theme.primary;
+  const resolvedTextColor = textColor ?? theme.background;
+
   return (
-    <View style={[styles.badge, { backgroundColor: color }]}>
-      <Text style={[styles.text, { color: textColor }]}>{label}</Text>
+    <View style={[styles.badge, { backgroundColor: resolvedColor }]}>
+      <Text style={[styles.text, { color: resolvedTextColor }]}>{label}</Text>
     </View>
   );
 }

@@ -1,12 +1,13 @@
 import React, { useRef } from "react";
 import {
-    Animated,
-    Pressable,
-    StyleProp,
-    StyleSheet,
-    ViewStyle,
+  Animated,
+  Pressable,
+  StyleProp,
+  StyleSheet,
+  ViewStyle,
 } from "react-native";
-import { Colors, Radii } from "../../constants/theme";
+import { Radii } from "../../constants/theme";
+import { useAppTheme } from "../../context/ThemeContext";
 
 interface Props {
   onPress: () => void;
@@ -27,6 +28,7 @@ export function IconButton({
   disabled,
   accessibilityLabel,
 }: Props) {
+  const { theme } = useAppTheme();
   const scale = useRef(new Animated.Value(1)).current;
 
   const onPressIn = () =>
@@ -35,6 +37,7 @@ export function IconButton({
       useNativeDriver: true,
       speed: 50,
     }).start();
+
   const onPressOut = () =>
     Animated.spring(scale, {
       toValue: 1,
@@ -44,11 +47,12 @@ export function IconButton({
 
   const bgColor =
     variant === "filled"
-      ? Colors.primary
+      ? theme.primary
       : variant === "surface"
-        ? Colors.surfaceElevated
+        ? theme.surfaceElevated
         : "transparent";
-  const borderColor = variant === "surface" ? Colors.border : "transparent";
+
+  const borderColor = variant === "surface" ? theme.border : "transparent";
 
   return (
     <Animated.View style={{ transform: [{ scale }] }}>

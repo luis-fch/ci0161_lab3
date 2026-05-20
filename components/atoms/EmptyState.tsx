@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
-import { Colors, Spacing, Typography } from "../../constants/theme";
+import { Spacing, Typography } from "../../constants/theme";
+import { useAppTheme } from "../../context/ThemeContext";
 
 interface Props {
   title?: string;
@@ -10,11 +11,15 @@ export function EmptyState({
   title = "No locations saved",
   subtitle = "Shake the device to save your current position",
 }: Props) {
+  const { theme } = useAppTheme();
+
   return (
     <View style={styles.container}>
       <Text style={styles.icon}>📍</Text>
-      <Text style={styles.title}>{title}</Text>
-      <Text style={styles.subtitle}>{subtitle}</Text>
+      <Text style={[styles.title, { color: theme.textMuted }]}>{title}</Text>
+      <Text style={[styles.subtitle, { color: theme.textMuted }]}>
+        {subtitle}
+      </Text>
     </View>
   );
 }
@@ -31,13 +36,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: Typography.sizes.md,
     fontWeight: Typography.weights.semibold,
-    color: Colors.textMuted,
     textAlign: "center",
     marginBottom: Spacing.xs,
   },
   subtitle: {
     fontSize: Typography.sizes.sm,
-    color: Colors.textMuted,
     textAlign: "center",
     lineHeight: 18,
     opacity: 0.7,

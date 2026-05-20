@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import { Animated, Pressable, StyleSheet, Text, View } from "react-native";
-import { Colors, Radii, Spacing, Typography } from "../../constants/theme";
+import { Radii, Spacing, Typography } from "../../constants/theme";
+import { useAppTheme } from "../../context/ThemeContext";
 import { SavedLocation } from "../../types/location";
 import { CoordinateText } from "./CoordinateText";
 import { Timestamp } from "./Timestamp";
@@ -18,6 +19,7 @@ export function LocationListItem({
   onPress,
   onDelete,
 }: Props) {
+  const { theme } = useAppTheme();
   const scale = useRef(new Animated.Value(1)).current;
 
   const pressIn = () =>
@@ -26,6 +28,7 @@ export function LocationListItem({
       useNativeDriver: true,
       speed: 50,
     }).start();
+
   const pressOut = () =>
     Animated.spring(scale, {
       toValue: 1,
@@ -39,14 +42,28 @@ export function LocationListItem({
         onPress={() => onPress?.(location)}
         onPressIn={pressIn}
         onPressOut={pressOut}
-        style={styles.row}
+        style={[
+          styles.row,
+          {
+            borderBottomColor: theme.borderSubtle,
+          },
+        ]}
         accessibilityRole="button"
       >
-        <View style={styles.indexBadge}>
-          <Text style={styles.indexText}>
+        <View
+          style={[
+            styles.indexBadge,
+            {
+              backgroundColor: theme.surfaceElevated,
+              borderColor: theme.border,
+            },
+          ]}
+        >
+          <Text style={[styles.indexText, { color: theme.primary }]}>
             {(index + 1).toString().padStart(2, "0")}
           </Text>
         </View>
+
         <View style={styles.info}>
           <CoordinateText
             latitude={location.latitude}
@@ -54,13 +71,16 @@ export function LocationListItem({
           />
           <Timestamp timestamp={location.timestamp} />
         </View>
+
         {onDelete && (
           <Pressable
             onPress={() => onDelete(location.id)}
             hitSlop={12}
             style={styles.deleteBtn}
           >
-            <Text style={styles.deleteText}>✕</Text>
+            <Text style={[styles.deleteText, { color: theme.textMuted }]}>
+              ✕
+            </Text>
           </Pressable>
         )}
       </Pressable>
@@ -75,16 +95,13 @@ const styles = StyleSheet.create({
     paddingVertical: Spacing.sm,
     paddingHorizontal: Spacing.md,
     borderBottomWidth: 1,
-    borderBottomColor: Colors.borderSubtle,
     gap: Spacing.sm,
   },
   indexBadge: {
     width: 30,
     height: 30,
     borderRadius: Radii.sm,
-    backgroundColor: Colors.surfaceElevated,
     borderWidth: 1,
-    borderColor: Colors.border,
     alignItems: "center",
     justifyContent: "center",
     flexShrink: 0,
@@ -92,7 +109,6 @@ const styles = StyleSheet.create({
   indexText: {
     fontFamily: "Sora",
     fontSize: Typography.sizes.xs,
-    color: Colors.primary,
     fontWeight: Typography.weights.bold,
   },
   info: { flex: 1, gap: 2 },
@@ -103,5 +119,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     flexShrink: 0,
   },
-  deleteText: { fontSize: Typography.sizes.sm, color: Colors.textMuted },
+  deleteText: {
+    fontSize: Typography.sizes.sm,
+  },
 });

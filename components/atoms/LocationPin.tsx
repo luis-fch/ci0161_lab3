@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { Animated, StyleSheet, View } from "react-native";
-import { Colors } from "../../constants/theme";
+import { useAppTheme } from "../../context/ThemeContext";
 
 interface Props {
   color?: string;
@@ -8,11 +8,10 @@ interface Props {
   pulse?: boolean;
 }
 
-export function LocationPin({
-  color = Colors.primary,
-  size = 20,
-  pulse = false,
-}: Props) {
+export function LocationPin({ color, size = 20, pulse = false }: Props) {
+  const { theme } = useAppTheme();
+  const resolvedColor = color ?? theme.primary;
+
   const pulseAnim = useRef(new Animated.Value(1)).current;
   const pulseOpacity = useRef(new Animated.Value(0.6)).current;
 
@@ -58,7 +57,7 @@ export function LocationPin({
               width: size,
               height: size,
               borderRadius: size / 2,
-              borderColor: color,
+              borderColor: resolvedColor,
               transform: [{ scale: pulseAnim }],
               opacity: pulseOpacity,
             },
@@ -72,7 +71,7 @@ export function LocationPin({
             width: size * 0.55,
             height: size * 0.55,
             borderRadius: size,
-            backgroundColor: color,
+            backgroundColor: resolvedColor,
           },
         ]}
       />

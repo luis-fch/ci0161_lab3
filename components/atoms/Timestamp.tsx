@@ -1,5 +1,6 @@
 import { StyleSheet, Text } from "react-native";
-import { Colors, Typography } from "../../constants/theme";
+import { Typography } from "../../constants/theme";
+import { useAppTheme } from "../../context/ThemeContext";
 
 interface Props {
   timestamp: number;
@@ -15,8 +16,10 @@ function relativeTime(ts: number): string {
 }
 
 export function Timestamp({ timestamp, color }: Props) {
+  const { theme } = useAppTheme();
+
   return (
-    <Text style={[styles.text, color ? { color } : null]}>
+    <Text style={[styles.text, { color: color ?? theme.textMuted }]}>
       {relativeTime(timestamp)}
     </Text>
   );
@@ -25,7 +28,6 @@ export function Timestamp({ timestamp, color }: Props) {
 const styles = StyleSheet.create({
   text: {
     fontSize: Typography.sizes.xs,
-    color: Colors.textMuted,
     fontFamily: "Sora",
   },
 });

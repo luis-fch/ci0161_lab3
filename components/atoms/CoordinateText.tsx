@@ -1,5 +1,6 @@
 import { StyleSheet, Text } from "react-native";
-import { Colors, Typography } from "../../constants/theme";
+import { Typography } from "../../constants/theme";
+import { useAppTheme } from "../../context/ThemeContext";
 
 interface Props {
   latitude: number;
@@ -18,12 +19,14 @@ function fmt(val: number, dir: [string, string]) {
 }
 
 export function CoordinateText({ latitude, longitude, size, color }: Props) {
+  const { theme } = useAppTheme();
+
   return (
     <Text
       style={[
         styles.text,
+        { color: color ?? theme.textSecondary },
         size ? { fontSize: size } : null,
-        color ? { color } : null,
       ]}
       numberOfLines={1}
     >
@@ -38,7 +41,6 @@ const styles = StyleSheet.create({
   text: {
     fontFamily: "Sora",
     fontSize: Typography.sizes.sm,
-    color: Colors.textSecondary,
     letterSpacing: 0.3,
   },
 });
