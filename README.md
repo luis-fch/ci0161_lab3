@@ -1,50 +1,63 @@
-# Welcome to your Expo app 👋
+# Lab 3
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A React Native map app built with Expo that saves with a shake and displays locations, with support for light and dark themes.
 
 ## Get started
 
 1. Install dependencies
 
    ```bash
-   npm install
+   bun install
    ```
 
 2. Start the app
 
    ```bash
-   npx expo start
+   bunx expo start
    ```
 
-In the output, you'll find options to open the app in a
+## Types
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+### `SavedLocation`
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+Defined in `types/location.ts`. Represents a location saved by the user.
 
-## Get a fresh project
+| Field       | Type     | Required | Description                         |
+| ----------- | -------- | -------- | ----------------------------------- |
+| `id`        | `string` | yes      | Unique identifier                   |
+| `latitude`  | `number` | yes      | Latitude coordinate                 |
+| `longitude` | `number` | yes      | Longitude coordinate                |
+| `timestamp` | `number` | yes      | Unix timestamp of when it was saved |
+| `label`     | `string` | no       | Optional display name               |
 
-When you're ready, run:
+## Component structure
 
-```bash
-npm run reset-project
+```
+components/
+├── atoms/          # Small, self-contained UI primitives
+│   ├── Badge           # Pill-shaped colored label
+│   ├── CoordinateText  # Formats lat/long into DMS notation
+│   ├── EmptyState      # Centered icon + message for empty lists
+│   ├── IconButton      # Pressable button with spring animation
+│   ├── LoadingSpinner  # Animated rotating ring
+│   ├── LocationPin     # Map marker dot with optional pulse ring
+│   ├── PanelHandle     # Drag indicator bar for bottom sheet
+│   ├── ThemeToggle     # Sun/moon icon button to switch themes
+│   └── Timestamp       # Converts Unix timestamp to relative time
+│
+└── organisms/      # Complex components composed of atoms
+    ├── LocationPanel   # Scrollable saved locations bottom sheet,
+    │                   # adapts layout for portrait and landscape
+    └── MapContainer    # Live map with user marker, saved location
+                        # markers, FAB controls, and coordinate HUD
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Theming
 
-## Learn more
+The app supports light and dark mode via a custom `useTheme` hook and React Context.
 
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- Theme follows the device OS setting by default
+- Can be overridden manually using the toggle button on the map
+- All colors are defined in `constants/theme.ts` as `lightTheme` and `darkTheme`, both typed against the `AppTheme` interface
+- Components access the current theme via `useAppTheme()` from `context/ThemeContext`
+- The map uses a custom dark style in dark mode and the default Google Maps style in light mode, with POI, transit, and road labels hidden in both
