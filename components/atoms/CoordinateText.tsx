@@ -9,14 +9,14 @@ interface Props {
   color?: string;
 }
 
-function fmt(val: number, dir: [string, string]) {
+const fmt = (val: number, dir: [string, string]): string => {
   const abs = Math.abs(val);
   const deg = Math.floor(abs);
   const minFull = (abs - deg) * 60;
   const min = Math.floor(minFull);
   const sec = ((minFull - min) * 60).toFixed(1);
   return `${deg}°${min}'${sec}" ${val >= 0 ? dir[0] : dir[1]}`;
-}
+};
 
 export function CoordinateText({ latitude, longitude, size, color }: Props) {
   const { theme } = useAppTheme();

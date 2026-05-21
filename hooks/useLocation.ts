@@ -27,7 +27,7 @@ export function useLocation(): UseLocationResult {
   useEffect(() => {
     let mounted = true;
 
-    async function start() {
+    const start = async () => {
       try {
         const { status } =
           await ExpoLocation.requestForegroundPermissionsAsync();
