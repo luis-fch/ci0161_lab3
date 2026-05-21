@@ -2,7 +2,7 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { Radii, Spacing, Typography } from "../../constants/theme";
 import { useAppTheme } from "../../context/ThemeContext";
 import { PanelHandle } from "../atoms/PanelHandle";
-import { SavedLocation } from "./MapContainer";
+import { SavedLocation } from "../../types/location";
 
 interface Props {
   orientation: "portrait" | "landscape";

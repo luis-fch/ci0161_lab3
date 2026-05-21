@@ -10,17 +10,11 @@ import {
 } from "../../constants/theme";
 import { useAppTheme } from "../../context/ThemeContext";
 import { CurrentLocation } from "../../hooks/useLocation";
+import { SavedLocation } from "../../types/location";
 import { CoordinateText } from "../atoms/CoordinateText";
 import { IconButton } from "../atoms/IconButton";
 import { LoadingSpinner } from "../atoms/LoadingSpinner";
 import { ThemeToggle } from "../atoms/ThemeToggle";
-
-export interface SavedLocation {
-  id: string;
-  name: string;
-  latitude: number;
-  longitude: number;
-}
 
 interface Props {
   currentLocation: CurrentLocation | null;
