@@ -8,6 +8,7 @@ import { SavedLocation } from "../types/location";
 import { useAppTheme } from "../context/ThemeContext";
 import { useLocation } from "../hooks/useLocation";
 import { useOrientation } from "../hooks/useOrientation";
+import { useShake } from "../hooks/useShake";
 
 const mockLocations: SavedLocation[] = [
   { id: "1", name: "Test 1", latitude: 9.9414, longitude: -84.0459, timestamp: 0 },
@@ -25,8 +26,26 @@ export default function HomeScreen() {
   const [panelVisible, setPanelVisible] = useState(true);
   const [selectedLocation, setSelectedLocation] =
     useState<SavedLocation | null>(null);
+  const [savedLocations, setSavedLocations] =
+    useState<SavedLocation[]>(mockLocations);
 
   const isPortrait = orientation === "portrait";
+
+  const handleShake = () => {
+    if (!location) return;
+    setSavedLocations((prev) => [
+      {
+        id: Date.now().toString(),
+        name: `Waypoint ${prev.length + 1}`,
+        latitude: location.latitude,
+        longitude: location.longitude,
+        timestamp: Date.now(),
+      },
+      ...prev,
+    ]);
+  };
+
+  useShake(handleShake);
 
   if (permissionDenied) {
     return (
@@ -65,7 +84,7 @@ export default function HomeScreen() {
         <MapContainer
           currentLocation={location}
           loading={loading}
-          locations={mockLocations}
+          locations={savedLocations}
           selectedLocation={selectedLocation}
           style={styles.map}
         />
@@ -75,7 +94,7 @@ export default function HomeScreen() {
             orientation={orientation}
             onClose={() => setPanelVisible(false)}
             onSelectLocation={setSelectedLocation}
-            locations={mockLocations}
+            locations={savedLocations}
           />
         )}
 
