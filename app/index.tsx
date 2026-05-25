@@ -42,6 +42,7 @@ export default function HomeScreen() {
         latitude: location.latitude,
         longitude: location.longitude,
         timestamp: Date.now(),
+        acceleration,
       },
       ...prev,
     ]);
