@@ -6,6 +6,7 @@ import { LocationPanel } from "../components/organisms/LocationPanel";
 import { MapContainer } from "../components/organisms/MapContainer";
 import { SavedLocation } from "../types/location";
 import { useAppTheme } from "../context/ThemeContext";
+import { useAccelerometer } from "../hooks/useAccelerometer";
 import { useLocation } from "../hooks/useLocation";
 import { useOrientation } from "../hooks/useOrientation";
 import { useShake } from "../hooks/useShake";
@@ -23,6 +24,7 @@ export default function HomeScreen() {
   const { theme, isDark } = useAppTheme();
   const orientation = useOrientation();
   const { location, loading, permissionDenied } = useLocation();
+  const acceleration = useAccelerometer();
   const [panelVisible, setPanelVisible] = useState(true);
   const [selectedLocation, setSelectedLocation] =
     useState<SavedLocation | null>(null);
@@ -45,7 +47,7 @@ export default function HomeScreen() {
     ]);
   };
 
-  useShake(handleShake);
+  useShake(acceleration, handleShake);
 
   if (permissionDenied) {
     return (
@@ -83,6 +85,7 @@ export default function HomeScreen() {
       >
         <MapContainer
           currentLocation={location}
+          acceleration={acceleration}
           loading={loading}
           locations={savedLocations}
           selectedLocation={selectedLocation}
