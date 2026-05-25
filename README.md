@@ -22,13 +22,14 @@ A React Native map app built with Expo that saves with a shake and displays loca
 
 Defined in `types/location.ts`. Represents a location saved by the user.
 
-| Field       | Type     | Required | Description                         |
-| ----------- | -------- | -------- | ----------------------------------- |
-| `id`        | `string` | yes      | Unique identifier                   |
-| `latitude`  | `number` | yes      | Latitude coordinate                 |
-| `longitude` | `number` | yes      | Longitude coordinate                |
-| `timestamp` | `number` | yes      | Unix timestamp of when it was saved |
-| `label`     | `string` | no       | Optional display name               |
+| Field          | Type                   | Required | Description                                          |
+| -------------- | ---------------------- | -------- | ---------------------------------------------------- |
+| `id`           | `string`               | yes      | Unique identifier                                    |
+| `name`         | `string`               | yes      | Display name shown in the locations panel            |
+| `latitude`     | `number`               | yes      | Latitude coordinate                                  |
+| `longitude`    | `number`               | yes      | Longitude coordinate                                 |
+| `timestamp`    | `number`               | yes      | Unix timestamp of when it was saved                  |
+| `acceleration` | `AccelerometerReading` | no       | x/y/z accelerometer reading (g) at the shake instant |
 
 ## Component structure
 
