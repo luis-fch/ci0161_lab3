@@ -9,21 +9,17 @@ import {
   Spacing,
 } from "../../constants/theme";
 import { useAppTheme } from "../../context/ThemeContext";
+import { AccelerometerReading } from "../../hooks/useAccelerometer";
 import { CurrentLocation } from "../../hooks/useLocation";
+import { SavedLocation } from "../../types/location";
 import { CoordinateText } from "../atoms/CoordinateText";
 import { IconButton } from "../atoms/IconButton";
 import { LoadingSpinner } from "../atoms/LoadingSpinner";
 import { ThemeToggle } from "../atoms/ThemeToggle";
 
-export interface SavedLocation {
-  id: string;
-  name: string;
-  latitude: number;
-  longitude: number;
-}
-
 interface Props {
   currentLocation: CurrentLocation | null;
+  acceleration: AccelerometerReading;
   loading: boolean;
   locations: SavedLocation[];
   selectedLocation?: SavedLocation | null;
@@ -32,6 +28,7 @@ interface Props {
 
 export function MapContainer({
   currentLocation,
+  acceleration,
   loading,
   locations,
   selectedLocation,
@@ -152,6 +149,10 @@ export function MapContainer({
             size={10}
             color={theme.textSecondary}
           />
+          <Text style={[styles.accelText, { color: theme.textSecondary }]}>
+            x: {acceleration.x.toFixed(2)}  y: {acceleration.y.toFixed(2)}  z:{" "}
+            {acceleration.z.toFixed(2)} (g)
+          </Text>
         </View>
       )}
 
@@ -189,6 +190,11 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     borderRadius: Radii.sm,
     borderWidth: 1,
+  },
+  accelText: {
+    fontSize: 10,
+    fontVariant: ["tabular-nums"],
+    marginTop: 2,
   },
   fabContainer: {
     position: "absolute",

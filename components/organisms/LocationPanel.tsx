@@ -2,7 +2,7 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { Radii, Spacing, Typography } from "../../constants/theme";
 import { useAppTheme } from "../../context/ThemeContext";
 import { PanelHandle } from "../atoms/PanelHandle";
-import { SavedLocation } from "./MapContainer";
+import { SavedLocation } from "../../types/location";
 
 interface Props {
   orientation: "portrait" | "landscape";
@@ -74,6 +74,15 @@ export function LocationPanel({
             >
               {location.latitude.toFixed(4)}, {location.longitude.toFixed(4)}
             </Text>
+            {location.acceleration && (
+              <Text
+                style={[styles.locationAccel, { color: theme.textSecondary }]}
+              >
+                x: {location.acceleration.x.toFixed(2)}  y:{" "}
+                {location.acceleration.y.toFixed(2)}  z:{" "}
+                {location.acceleration.z.toFixed(2)} (g)
+              </Text>
+            )}
           </Pressable>
         ))}
       </ScrollView>
@@ -145,5 +154,9 @@ const styles = StyleSheet.create({
   },
   locationCoords: {
     fontSize: Typography.sizes.sm,
+  },
+  locationAccel: {
+    fontSize: Typography.sizes.sm,
+    marginTop: 2,
   },
 });
