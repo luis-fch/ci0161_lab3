@@ -1,5 +1,5 @@
 import * as ExpoLocation from "expo-location";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import type { CurrentLocation, UseLocationResult } from "../types/location";
 
 export function useLocation(): UseLocationResult {
@@ -8,16 +8,14 @@ export function useLocation(): UseLocationResult {
   const [permissionDenied, setPermissionDenied] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const watchRef = useRef<ExpoLocation.LocationSubscription | null>(null);
 
   useEffect(() => {
-    let mounted = true;
+    let subscription: ExpoLocation.LocationSubscription | null = null;
 
     const start = async () => {
       try {
         const { status } =
           await ExpoLocation.requestForegroundPermissionsAsync();
-        if (!mounted) return;
 
         if (status !== "granted") {
           setPermissionDenied(true);
@@ -30,7 +28,6 @@ export function useLocation(): UseLocationResult {
         const initial = await ExpoLocation.getCurrentPositionAsync({
           accuracy: ExpoLocation.Accuracy.Highest,
         });
-        if (!mounted) return;
 
         setLocation({
           latitude: initial.coords.latitude,
@@ -40,14 +37,13 @@ export function useLocation(): UseLocationResult {
         });
         setLoading(false);
 
-        watchRef.current = await ExpoLocation.watchPositionAsync(
+        subscription = await ExpoLocation.watchPositionAsync(
           {
             accuracy: ExpoLocation.Accuracy.Highest,
             timeInterval: 2000,
             distanceInterval: 1,
           },
           (pos) => {
-            if (!mounted) return;
             setLocation({
               latitude: pos.coords.latitude,
               longitude: pos.coords.longitude,
@@ -57,17 +53,14 @@ export function useLocation(): UseLocationResult {
           },
         );
       } catch (e) {
-        if (!mounted) return;
         setError(e instanceof Error ? e.message : "Location error");
         setLoading(false);
       }
     };
 
     start();
-    return () => {
-      mounted = false;
-      watchRef.current?.remove();
-    };
+
+    return () => subscription?.remove();
   }, []);
 
   return { location, permissionGranted, permissionDenied, loading, error };
