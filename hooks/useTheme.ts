@@ -1,16 +1,9 @@
 import { useState } from "react";
 import { useColorScheme } from "react-native";
-import { AppTheme, darkTheme, lightTheme } from "../constants/theme";
+import { darkTheme, lightTheme } from "../constants/theme";
+import { UseThemeReturn } from "../types/theme";
 
 type ColorSchemeOverride = "light" | "dark" | null;
-
-export interface UseThemeReturn {
-  theme: AppTheme;
-  isDark: boolean;
-  toggleTheme: () => void;
-  setTheme: (scheme: "light" | "dark") => void;
-  resetToSystem: () => void;
-}
 
 export function useTheme(): UseThemeReturn {
   const systemScheme = useColorScheme();

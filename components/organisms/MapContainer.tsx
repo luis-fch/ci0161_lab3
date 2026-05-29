@@ -9,9 +9,8 @@ import {
   Spacing,
 } from "../../constants/theme";
 import { useAppTheme } from "../../context/ThemeContext";
-import { AccelerometerReading } from "../../hooks/useAccelerometer";
-import { CurrentLocation } from "../../hooks/useLocation";
-import { SavedLocation } from "../../types/location";
+import { AccelerometerReading } from "../../types/accelerometer";
+import { CurrentLocation, SavedLocation } from "../../types/location";
 import { CoordinateText } from "../atoms/CoordinateText";
 import { IconButton } from "../atoms/IconButton";
 import { LoadingSpinner } from "../atoms/LoadingSpinner";
@@ -150,7 +149,7 @@ export function MapContainer({
             color={theme.textSecondary}
           />
           <Text style={[styles.accelText, { color: theme.textSecondary }]}>
-            x: {acceleration.x.toFixed(2)}  y: {acceleration.y.toFixed(2)}  z:{" "}
+            x: {acceleration.x.toFixed(2)} y: {acceleration.y.toFixed(2)} z:{" "}
             {acceleration.z.toFixed(2)} (g)
           </Text>
         </View>

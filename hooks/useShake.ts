@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 
-import { AccelerometerReading } from "./useAccelerometer";
+import { AccelerometerReading } from "../types/accelerometer";
 
 const THRESHOLD = 2; // Magnitude of the acceleration vector
 const DEBOUNCE_MS = 3000;

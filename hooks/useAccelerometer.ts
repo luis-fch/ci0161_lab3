@@ -1,11 +1,6 @@
 import { Accelerometer } from "expo-sensors";
 import { useEffect, useState } from "react";
-
-export interface AccelerometerReading {
-  x: number;
-  y: number;
-  z: number;
-}
+import type { AccelerometerReading } from "../types/accelerometer";
 
 const UPDATE_INTERVAL_MS = 100;
 
