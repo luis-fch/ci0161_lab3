@@ -1,7 +1,5 @@
 import "dotenv/config";
 
-//console.log("GOOGLE MAPS KEY:", process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY);
-
 export default {
   expo: {
     name: "ci0161_lab3",
@@ -18,6 +16,7 @@ export default {
 
     ios: {
       supportsTablet: true,
+      bundleIdentifier: "com.anonymous.ci0161-lab3",
     },
 
     android: {

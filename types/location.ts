@@ -1,4 +1,4 @@
-import { AccelerometerReading } from "../hooks/useAccelerometer";
+import { AccelerometerReading } from "./accelerometer";
 
 export interface SavedLocation {
   id: string;
@@ -7,4 +7,19 @@ export interface SavedLocation {
   longitude: number;
   timestamp: number;
   acceleration?: AccelerometerReading;
+}
+
+export interface CurrentLocation {
+  latitude: number;
+  longitude: number;
+  accuracy: number | null;
+  heading: number | null;
+}
+
+export interface UseLocationResult {
+  location: CurrentLocation | null;
+  permissionGranted: boolean;
+  permissionDenied: boolean;
+  loading: boolean;
+  error: string | null;
 }
